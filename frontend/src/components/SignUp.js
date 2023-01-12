@@ -1,12 +1,30 @@
 import React,{useState} from "react";
+import {useNavigate} from 'react-router-dom' // hook use to redirect
 
 const SignUp = () => {
 
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const collectData=()=>{
-        console.warn(name,email,password)
+    const navigat =  useNavigate();
+
+    const collectData= async ()=>{
+        console.warn(name,email,password);
+        let result = await fetch('http://localhost:5000/register',{
+            method:'post',
+            body:JSON.stringify({name,email,password}), // api took object in json.stringify
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
+        result = await result.json()
+
+        console.warn( result);
+
+        if(result){
+            navigat('/') // where you want to navigate
+        }
+
     }
 
     return(
