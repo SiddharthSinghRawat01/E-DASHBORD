@@ -38,6 +38,15 @@ app.post("/add-product", async (req,res)=>{
     res.send(result);
 })
 
+app.get("/products",async (req,res)=>{
+    let products = await Product.find();
+    if(products.length > 0){
+        res.send(products)
+    }else{
+        res.send({resule: "no result find"})
+    }
+})
+
 
 app.listen(5000,(err)=>{
     if(err) console.log(err);
