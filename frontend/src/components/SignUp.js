@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import {useNavigate} from 'react-router-dom' // hook use to redirect
 
 const SignUp = () => {
@@ -6,7 +6,14 @@ const SignUp = () => {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const navigat =  useNavigate();
+    const navigate =  useNavigate();
+
+    useEffect(()=>{
+        const auth = localStorage.getItem('user');
+        if(auth){
+            navigate('/')
+        }
+    })
 
     const collectData= async ()=>{
         console.warn(name,email,password);
@@ -16,14 +23,12 @@ const SignUp = () => {
             headers:{
                 'Content-Type':'application/json'
             }
-        })
-        result = await result.json()
-
+        });
+        result = await result.json();
         console.warn( result);
-
-        if(result){
-            navigat('/') // where you want to navigate
-        }
+        localStorage.setItem("user",JSON.stringify(result)); //convert it into string to store in local strorage
+        navigate('/'); // where you want to navigate
+        
 
     }
 
