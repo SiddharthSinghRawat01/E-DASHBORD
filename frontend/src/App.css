@@ -105,6 +105,14 @@
   width: 150px;
 }
 
+.search-porduct-box{
+  width: 400px;
+  margin: 20px;
+  height: 40px;
+  border: 1px solid skyblue;
+  padding-left: 20px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
