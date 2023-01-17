@@ -13,7 +13,7 @@ const SignUp = () => {
         if(auth){
             navigate('/')
         }
-    })
+    },[]);
 
     const collectData= async ()=>{
         console.warn(name,email,password);
@@ -26,7 +26,8 @@ const SignUp = () => {
         });
         result = await result.json();
         console.warn( result);
-        localStorage.setItem("user",JSON.stringify(result)); //convert it into string to store in local strorage
+        localStorage.setItem("user",JSON.stringify(result.result)); //convert it into string to store in local strorage
+        localStorage.setItem("token",JSON.stringify(result.auth)); //convert it into string to store in local strorage
         navigate('/'); // where you want to navigate
         
 

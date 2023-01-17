@@ -42,13 +42,13 @@ app.post("/login", async (req, res) => {
 
 });
 
-app.post("/add-product", async (req, res) => {
+app.post("/add-product", verifyToken, async (req, res) => {
     let product = new Product(req.body);
     let result = await product.save();
     res.send(result);
 })
 
-app.get("/products", async (req, res) => {
+app.get("/products", verifyToken, async (req, res) => {
     let products = await Product.find();
     if (products.length > 0) {
         res.send(products)
@@ -57,12 +57,12 @@ app.get("/products", async (req, res) => {
     }
 })
 
-app.delete("/product/:id", async (req, res) => {
+app.delete("/product/:id", verifyToken, async (req, res) => {
     const result = await Product.deleteOne({ _id: req.params.id });
     res.send(result);
 })
 
-app.get("/product/:id", async (req, res) => {
+app.get("/product/:id", verifyToken, async (req, res) => {
     const result = await Product.findOne({ _id: req.params.id })
     if (result) {
         res.send(result);
@@ -71,7 +71,7 @@ app.get("/product/:id", async (req, res) => {
     }
 })
 
-app.put("/product/:id", async (req, res) => {
+app.put("/product/:id", verifyToken, async (req, res) => {
     const result = await Product.updateOne(
         { _id: req.params.id },
         {
@@ -82,7 +82,7 @@ app.put("/product/:id", async (req, res) => {
     res.send(result)
 });
 
-app.get("/search/:key", async (req, res) => {
+app.get("/search/:key", verifyToken, async (req, res) => {
     let result = await Product.find({
         "$or": [
             {name: { $regex: req.params.key }},
@@ -93,6 +93,23 @@ app.get("/search/:key", async (req, res) => {
     })
     res.send(result);
 });
+
+function verifyToken(req, res, next){
+    let token = req.headers['authorization'];
+    if(token){
+        token = token.split(' ')[1];
+        Jwt.verify(token,jwtKey,(err,valid)=>{
+            if(err) {
+                res.send('err in token')
+            }else{
+                next();
+            }
+        })
+    }else{
+     res.send("please add token in header")
+    }
+ 
+}
 
 
 app.listen(5000, (err) => {
