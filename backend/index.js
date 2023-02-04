@@ -33,7 +33,7 @@ app.post("/login", async (req, res) => {
             })
             
         } else {
-            res.send({ msg: "no user found" })
+            res.send({ msg: "no use r found" })
         }
     } else {
         res.send({ msg: "no user found" })
@@ -104,7 +104,7 @@ function verifyToken(req, res, next){
             }else{
                 next();
             }
-        })
+        })  
     }else{
      res.send("please add token in header")
     }
